@@ -17,29 +17,28 @@ const campoData = document.querySelector("#dataConsulta");
 const campoHora = document.querySelector("#horaConsulta");
 const campoSituacao = document.querySelector("#situacao");
 
-// Preenche o <select> de médicos com a lista de exemplo.
-function preencherMedicos() {
-  campoMedico.innerHTML = MEDICOS_EXEMPLO.map(
-    (nome) => `<option value="${escaparHtml(nome)}">${escaparHtml(nome)}</option>`
-  ).join("");
-}
-
-// Preenche o <select> de pacientes com quem já está cadastrado.
-function preencherPacientes() {
+// Preenche os <select> de pacientes e médicos (ativos) já cadastrados.
+function preencherListas() {
   const pacientes = lerDados(CHAVE_PACIENTES);
-  campoPaciente.innerHTML = pacientes
-    .map((p) => `<option value="${escaparHtml(p.nome)}">${escaparHtml(p.nome)}</option>`)
-    .join("");
+  const medicos = lerDados(CHAVE_MEDICOS).filter((m) => m.situacao !== "Inativo");
 
-  const semPaciente = pacientes.length === 0;
-  avisoSemPaciente.classList.toggle("oculto", !semPaciente);
-  botaoNovaConsulta.disabled = semPaciente;
+  campoPaciente.innerHTML = opcoesHtml(pacientes.map((p) => p.nome));
+  campoMedico.innerHTML = opcoesHtml(medicos.map((m) => m.nome));
+
+  const faltando = [];
+  if (pacientes.length === 0) faltando.push('um paciente na tela "Pacientes"');
+  if (medicos.length === 0) faltando.push('um médico ativo na tela "Médicos"');
+
+  avisoSemPaciente.textContent =
+    "Cadastre ao menos " + faltando.join(" e ") + " antes de criar uma consulta.";
+  avisoSemPaciente.classList.toggle("oculto", faltando.length === 0);
+  botaoNovaConsulta.disabled = faltando.length > 0;
 }
 
 // Abre o formulário para uma nova consulta.
 function abrirFormulario() {
-  preencherPacientes();
-  if (campoPaciente.options.length === 0) return;
+  preencherListas();
+  if (botaoNovaConsulta.disabled) return;
 
   formulario.reset();
   indiceConsultaCampo.value = "";
@@ -56,16 +55,9 @@ botaoNovaConsulta.addEventListener("click", abrirFormulario);
 document.querySelector("#fecharModal").addEventListener("click", fecharFormulario);
 document.querySelector("#cancelarConsulta").addEventListener("click", fecharFormulario);
 
-// Adiciona uma opção ao <select> caso ela ainda não exista.
-function garantirOpcao(select, valor) {
-  if (!valor) return;
-  const existe = Array.from(select.options).some((o) => o.value === valor);
-  if (!existe) select.add(new Option(valor, valor));
-}
-
 // Preenche o formulário para edição de uma consulta existente.
 function abrirEdicao(consulta) {
-  preencherPacientes();
+  preencherListas();
   formulario.reset();
   indiceConsultaCampo.value = consulta.id;
   tituloModal.textContent = "Editar Consulta";
@@ -186,10 +178,9 @@ campoBusca.addEventListener("input", renderizarLista);
 
 // Liga os botões "Carregar exemplos" / "Limpar dados" do rodapé do menu.
 ligarBotoesRodape(function () {
-  preencherPacientes();
+  preencherListas();
   renderizarLista();
 });
 
-preencherMedicos();
-preencherPacientes();
+preencherListas();
 renderizarLista();

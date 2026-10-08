@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>CliniSys - Consultas</title>
+  <title>CliniSys - Convênios</title>
 
   <link rel="stylesheet" href="../public/css/style.css" />
 </head>
@@ -27,8 +27,8 @@
         <a href="../index.html">Painel</a>
         <a href="pacientes.html">Pacientes</a>
         <a href="medicos.html">Médicos</a>
-        <a href="convenios.html">Convênios</a>
-        <a href="consultas.html" class="ativo">Consultas</a>
+        <a href="convenios.html" class="ativo">Convênios</a>
+        <a href="consultas.html">Consultas</a>
       </nav>
 
       <div class="menu-rodape">
@@ -41,87 +41,82 @@
     <main class="conteudo">
 
       <div class="cabecalho-pagina">
-        <h1>Consultas</h1>
+        <h1>Convênios</h1>
         <div class="cabecalho-acoes">
-          <input type="text" id="campoBusca" placeholder="Buscar consultas..." />
-          <button class="btn btn-primario" id="novaConsulta">+ Nova Consulta</button>
+          <input type="text" id="campoBusca" placeholder="Buscar convênios..." />
+          <button class="btn btn-primario" id="abrirFormulario">+ Novo Convênio</button>
         </div>
       </div>
 
       <div class="cartao">
         <div class="cartao-cabecalho">
-          Consultas <span class="contador" id="quantidadeConsultas">0</span>
+          Convênios <span class="contador" id="quantidade">0</span>
         </div>
 
         <table>
           <thead>
             <tr>
-              <th>Data</th>
-              <th>Paciente</th>
-              <th>Médico</th>
+              <th>Nome</th>
+              <th>Registro ANS</th>
+              <th>Telefone</th>
+              <th>Pacientes</th>
               <th>Situação</th>
               <th></th>
             </tr>
           </thead>
-          <tbody id="tabelaConsultas"></tbody>
+          <tbody id="listaConvenios"></tbody>
         </table>
 
-        <div class="mensagem-vazia oculto" id="mensagemVaziaConsultas">
-          Nenhuma consulta cadastrada. Clique em "Carregar exemplos" ou em "+ Nova Consulta".
+        <div class="mensagem-vazia oculto" id="mensagemVazia">
+          Nenhum convênio cadastrado. Clique em "Carregar exemplos" ou em "+ Novo Convênio".
         </div>
-      </div>
-
-      <div class="aviso oculto" id="avisoSemPaciente">
-        Cadastre ao menos um paciente na tela "Pacientes" antes de criar uma consulta.
       </div>
     </main>
   </div>
 
-  <!-- Modal de nova / edição de consulta -->
-  <div class="fundo-modal oculto" id="fundoModal">
+  <!-- Modal de cadastro / edição -->
+  <div class="fundo-modal oculto" id="sobreposicao">
     <div class="modal">
       <div class="modal-cabecalho">
-        <h2 id="tituloModal">Nova Consulta</h2>
-        <button id="fecharModal">✕</button>
+        <h2 id="tituloModal">Novo Convênio</h2>
+        <button id="fecharFormulario">✕</button>
       </div>
 
-      <form id="formConsulta">
-        <input type="hidden" id="indiceConsulta" />
+      <form id="formConvenio">
+        <input type="hidden" id="convenioId" />
 
         <div class="grade-formulario">
           <div class="campo">
-            <label for="paciente">Paciente *</label>
-            <select id="paciente" required></select>
+            <label for="nome">Nome *</label>
+            <input type="text" id="nome" placeholder="Nome do convênio" required />
           </div>
 
           <div class="campo">
-            <label for="medico">Médico *</label>
-            <select id="medico" required></select>
+            <label for="registroAns">Registro ANS *</label>
+            <input type="text" id="registroAns" placeholder="Só números" required />
           </div>
 
           <div class="campo">
-            <label for="dataConsulta">Data *</label>
-            <input type="date" id="dataConsulta" required />
+            <label for="telefone">Telefone</label>
+            <input type="text" id="telefone" placeholder="0800 000 0000" />
           </div>
 
           <div class="campo">
-            <label for="horaConsulta">Hora *</label>
-            <input type="time" id="horaConsulta" required />
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="email@exemplo.com" />
           </div>
 
           <div class="campo largura-total">
             <label for="situacao">Situação *</label>
             <select id="situacao" required>
-              <option value="Agendada">Agendada</option>
-              <option value="Confirmada">Confirmada</option>
-              <option value="Realizada">Realizada</option>
-              <option value="Cancelada">Cancelada</option>
+              <option value="Ativo">Ativo</option>
+              <option value="Inativo">Inativo</option>
             </select>
           </div>
         </div>
 
         <div class="modal-rodape">
-          <button type="button" class="btn btn-secundario" id="cancelarConsulta">Cancelar</button>
+          <button type="button" class="btn btn-secundario" id="cancelar">Cancelar</button>
           <button type="submit" class="btn btn-primario">Salvar</button>
         </div>
       </form>
@@ -129,6 +124,6 @@
   </div>
 
   <script src="../public/js/dados.js"></script>
-  <script src="../public/js/consultas.js"></script>
+  <script src="../public/js/convenios.js"></script>
 </body>
 </html>

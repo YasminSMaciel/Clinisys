@@ -250,13 +250,15 @@ td.acoes {
 }
 
 .selo-convenio,
-.selo-confirmada {
+.selo-confirmada,
+.selo-ativo {
   background-color: var(--verde-claro);
   color: var(--verde-escuro);
 }
 
 .selo-particular,
-.selo-realizada {
+.selo-realizada,
+.selo-inativo {
   background-color: #e4e8f0;
   color: var(--texto-claro);
 }

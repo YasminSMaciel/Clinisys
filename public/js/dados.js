@@ -2,12 +2,45 @@
 
 const CHAVE_PACIENTES = "clinisys_pacientes";
 const CHAVE_CONSULTAS = "clinisys_consultas";
+const CHAVE_MEDICOS = "clinisys_medicos";
+const CHAVE_CONVENIOS = "clinisys_convenios";
 
 const MEDICOS_EXEMPLO = [
-  "Dr(a). Ana Ferreira",
-  "Dr(a). Carlos Mendes",
-  "Dr(a). Beatriz Rocha",
-  "Dr(a). Paulo Nogueira",
+  {
+    id: 1, nome: "Dr(a). Ana Ferreira", crm: "CRM/PR 21345", especialidade: "Clínica Geral",
+    telefone: "(45) 3222-1001", email: "ana.ferreira@clinisys.com", situacao: "Ativo",
+  },
+  {
+    id: 2, nome: "Dr(a). Carlos Mendes", crm: "CRM/PR 18760", especialidade: "Cardiologia",
+    telefone: "(45) 3222-1002", email: "carlos.mendes@clinisys.com", situacao: "Ativo",
+  },
+  {
+    id: 3, nome: "Dr(a). Beatriz Rocha", crm: "CRM/PR 30912", especialidade: "Pediatria",
+    telefone: "(45) 3222-1003", email: "beatriz.rocha@clinisys.com", situacao: "Ativo",
+  },
+  {
+    id: 4, nome: "Dr(a). Paulo Nogueira", crm: "CRM/PR 14228", especialidade: "Ortopedia",
+    telefone: "(45) 3222-1004", email: "paulo.nogueira@clinisys.com", situacao: "Ativo",
+  },
+];
+
+const CONVENIOS_EXEMPLO = [
+  {
+    id: 1, nome: "Unimed", registroAns: "339679", telefone: "0800 642 2009",
+    email: "atendimento@unimed.exemplo.com", situacao: "Ativo",
+  },
+  {
+    id: 2, nome: "Bradesco Saúde", registroAns: "005711", telefone: "0800 701 2700",
+    email: "atendimento@bradesco.exemplo.com", situacao: "Ativo",
+  },
+  {
+    id: 3, nome: "Sulamérica", registroAns: "006246", telefone: "0800 970 0500",
+    email: "atendimento@sulamerica.exemplo.com", situacao: "Ativo",
+  },
+  {
+    id: 4, nome: "Amil", registroAns: "326305", telefone: "0800 021 2583",
+    email: "atendimento@amil.exemplo.com", situacao: "Inativo",
+  },
 ];
 
 // Dados fictícios para simular o uso do sistema.
@@ -132,15 +165,47 @@ function salvarDados(chave, lista) {
   }
 }
 
-function carregarExemplos() {
-  salvarDados(CHAVE_PACIENTES, PACIENTES_EXEMPLO);
-  salvarDados(CHAVE_CONSULTAS, gerarConsultasExemplo());
+// Dados de exemplo de cada cadastro do sistema.
+function exemplosPorChave() {
+  return {
+    [CHAVE_MEDICOS]: MEDICOS_EXEMPLO,
+    [CHAVE_CONVENIOS]: CONVENIOS_EXEMPLO,
+    [CHAVE_PACIENTES]: PACIENTES_EXEMPLO,
+    [CHAVE_CONSULTAS]: gerarConsultasExemplo(),
+  };
 }
 
-// Na primeira vez que o sistema é aberto, já carrega os dados fictícios.
-// Depois de "Limpar dados" a lista fica vazia (e não é recarregada sozinha).
-if (lerTexto(CHAVE_PACIENTES) === null) {
-  carregarExemplos();
+function carregarExemplos() {
+  const exemplos = exemplosPorChave();
+  Object.keys(exemplos).forEach((chave) => salvarDados(chave, exemplos[chave]));
+}
+
+function limparTodosDados() {
+  Object.keys(exemplosPorChave()).forEach((chave) => salvarDados(chave, []));
+}
+
+// Na primeira vez que o sistema é aberto, já carrega os dados fictícios
+// (cada cadastro separadamente). Depois de "Limpar dados" as listas ficam
+// vazias e não são recarregadas sozinhas.
+(function iniciarDados() {
+  const exemplos = exemplosPorChave();
+  Object.keys(exemplos).forEach((chave) => {
+    if (lerTexto(chave) === null) salvarDados(chave, exemplos[chave]);
+  });
+})();
+
+// Adiciona uma opção ao <select> caso ela ainda não exista.
+function garantirOpcao(select, valor) {
+  if (!valor) return;
+  const existe = Array.from(select.options).some((o) => o.value === valor);
+  if (!existe) select.add(new Option(valor, valor));
+}
+
+// Monta as <option> de um <select> a partir de uma lista de nomes.
+function opcoesHtml(nomes) {
+  return nomes
+    .map((nome) => `<option value="${escaparHtml(nome)}">${escaparHtml(nome)}</option>`)
+    .join("");
 }
 
 function proximoId(lista) {
@@ -182,8 +247,7 @@ function ligarBotoesRodape(aoRecarregar) {
 
   if (botaoLimpar) {
     botaoLimpar.addEventListener("click", function () {
-      salvarDados(CHAVE_PACIENTES, []);
-      salvarDados(CHAVE_CONSULTAS, []);
+      limparTodosDados();
       aoRecarregar();
     });
   }

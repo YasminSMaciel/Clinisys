@@ -26,8 +26,8 @@
       <nav>
         <a href="index.html" class="ativo">Painel</a>
         <a href="views/pacientes.html">Pacientes</a>
-        <a href="#">Médicos</a>
-        <a href="#">Convênios</a>
+        <a href="views/medicos.html">Médicos</a>
+        <a href="views/convenios.html">Convênios</a>
         <a href="views/consultas.html">Consultas</a>
       </nav>
 
@@ -50,6 +50,14 @@
           <strong id="totalPacientes">0</strong>
         </div>
         <div class="cartao-resumo">
+          <span>Médicos cadastrados</span>
+          <strong id="totalMedicos">0</strong>
+        </div>
+        <div class="cartao-resumo">
+          <span>Convênios cadastrados</span>
+          <strong id="totalConvenios">0</strong>
+        </div>
+        <div class="cartao-resumo">
           <span>Consultas cadastradas</span>
           <strong id="totalConsultas">0</strong>
         </div>
@@ -62,6 +70,14 @@
             <tr>
               <td><a href="views/pacientes.html">Ir para Pacientes</a></td>
               <td class="acoes">Cadastrar, buscar, editar e excluir pacientes</td>
+            </tr>
+            <tr>
+              <td><a href="views/medicos.html">Ir para Médicos</a></td>
+              <td class="acoes">Cadastrar, buscar, editar e excluir médicos</td>
+            </tr>
+            <tr>
+              <td><a href="views/convenios.html">Ir para Convênios</a></td>
+              <td class="acoes">Cadastrar, buscar, editar e excluir convênios</td>
             </tr>
             <tr>
               <td><a href="views/consultas.html">Ir para Consultas</a></td>
@@ -78,6 +94,10 @@
     function atualizarResumo() {
       document.querySelector("#totalPacientes").textContent =
         lerDados(CHAVE_PACIENTES).length;
+      document.querySelector("#totalMedicos").textContent =
+        lerDados(CHAVE_MEDICOS).length;
+      document.querySelector("#totalConvenios").textContent =
+        lerDados(CHAVE_CONVENIOS).length;
       document.querySelector("#totalConsultas").textContent =
         lerDados(CHAVE_CONSULTAS).length;
     }
