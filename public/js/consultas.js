@@ -20,7 +20,7 @@ const campoSituacao = document.querySelector("#situacao");
 // Preenche o <select> de médicos com a lista de exemplo.
 function preencherMedicos() {
   campoMedico.innerHTML = MEDICOS_EXEMPLO.map(
-    (nome) => `<option value="${nome}">${nome}</option>`
+    (nome) => `<option value="${escaparHtml(nome)}">${escaparHtml(nome)}</option>`
   ).join("");
 }
 
@@ -28,7 +28,7 @@ function preencherMedicos() {
 function preencherPacientes() {
   const pacientes = lerDados(CHAVE_PACIENTES);
   campoPaciente.innerHTML = pacientes
-    .map((p) => `<option value="${p.nome}">${p.nome}</option>`)
+    .map((p) => `<option value="${escaparHtml(p.nome)}">${escaparHtml(p.nome)}</option>`)
     .join("");
 
   const semPaciente = pacientes.length === 0;
@@ -56,12 +56,23 @@ botaoNovaConsulta.addEventListener("click", abrirFormulario);
 document.querySelector("#fecharModal").addEventListener("click", fecharFormulario);
 document.querySelector("#cancelarConsulta").addEventListener("click", fecharFormulario);
 
+// Adiciona uma opção ao <select> caso ela ainda não exista.
+function garantirOpcao(select, valor) {
+  if (!valor) return;
+  const existe = Array.from(select.options).some((o) => o.value === valor);
+  if (!existe) select.add(new Option(valor, valor));
+}
+
 // Preenche o formulário para edição de uma consulta existente.
 function abrirEdicao(consulta) {
   preencherPacientes();
   formulario.reset();
   indiceConsultaCampo.value = consulta.id;
   tituloModal.textContent = "Editar Consulta";
+
+  // Mantém o paciente/médico da consulta mesmo que não esteja mais na lista.
+  garantirOpcao(campoPaciente, consulta.paciente);
+  garantirOpcao(campoMedico, consulta.medico);
 
   campoPaciente.value = consulta.paciente;
   campoMedico.value = consulta.medico;
@@ -127,8 +138,10 @@ function renderizarLista() {
   const consultas = lerDados(CHAVE_CONSULTAS)
     .filter(
       (c) =>
-        c.paciente.toLowerCase().includes(termo) ||
-        c.medico.toLowerCase().includes(termo)
+        (c.paciente || "").toLowerCase().includes(termo) ||
+        (c.medico || "").toLowerCase().includes(termo) ||
+        (c.situacao || "").toLowerCase().includes(termo) ||
+        formatarData(c.data).includes(termo)
     )
     .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
 
@@ -137,10 +150,10 @@ function renderizarLista() {
   consultas.forEach((consulta) => {
     const linha = document.createElement("tr");
     linha.innerHTML = `
-      <td>${formatarData(consulta.data)} ${consulta.hora}</td>
-      <td>${consulta.paciente}</td>
-      <td>${consulta.medico}</td>
-      <td><span class="selo ${classeSituacao(consulta.situacao)}">${consulta.situacao}</span></td>
+      <td>${formatarData(consulta.data)} ${escaparHtml(consulta.hora)}</td>
+      <td>${escaparHtml(consulta.paciente)}</td>
+      <td>${escaparHtml(consulta.medico)}</td>
+      <td><span class="selo ${classeSituacao(consulta.situacao)}">${escaparHtml(consulta.situacao)}</span></td>
       <td class="acoes">
         <button class="btn-linha" data-acao="editar" data-id="${consulta.id}">Editar</button>
         <button class="btn-linha perigo" data-acao="excluir" data-id="${consulta.id}">Excluir</button>

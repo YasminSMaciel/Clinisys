@@ -36,6 +36,11 @@ a {
   color: inherit;
 }
 
+/* Esconde qualquer elemento (mensagens, avisos e modais) */
+.oculto {
+  display: none !important;
+}
+
 /* Estrutura principal */
 .sistema {
   display: flex;
@@ -285,6 +290,11 @@ td.acoes {
   background-color: var(--verde-escuro);
 }
 
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-secundario {
   background-color: var(--branco);
   color: var(--texto);
@@ -336,9 +346,6 @@ td.acoes {
   z-index: 10;
 }
 
-.fundo-modal.oculto {
-  display: none;
-}
 
 .modal {
   background-color: var(--branco);
@@ -444,9 +451,6 @@ td.acoes {
   font-size: 13px;
 }
 
-.aviso.oculto {
-  display: none;
-}
 
 @media (max-width: 760px) {
   .sistema {
