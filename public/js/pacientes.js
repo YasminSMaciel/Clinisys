@@ -87,7 +87,16 @@ formulario.addEventListener("submit", function (evento) {
 
   if (idEditado) {
     const indice = pacientes.findIndex((p) => p.id === idEditado);
+    const nomeAnterior = pacientes[indice].nome;
     pacientes[indice] = dadosPaciente;
+
+    // Se o nome mudou, atualiza também as consultas desse paciente.
+    if (nomeAnterior !== dadosPaciente.nome) {
+      const consultas = lerDados(CHAVE_CONSULTAS).map((c) =>
+        c.paciente === nomeAnterior ? { ...c, paciente: dadosPaciente.nome } : c
+      );
+      salvarDados(CHAVE_CONSULTAS, consultas);
+    }
   } else {
     pacientes.push(dadosPaciente);
   }
@@ -109,10 +118,14 @@ function excluirPaciente(id) {
 // Desenha a tabela de pacientes, aplicando o filtro de busca se houver.
 function renderizarLista() {
   const termo = campoBusca.value.trim().toLowerCase();
+  const termoNumeros = somenteNumeros(termo);
   const pacientes = lerDados(CHAVE_PACIENTES).filter(
     (p) =>
-      p.nome.toLowerCase().includes(termo) ||
-      p.cpf.toLowerCase().includes(termo)
+      (p.nome || "").toLowerCase().includes(termo) ||
+      (p.cpf || "").toLowerCase().includes(termo) ||
+      (termoNumeros !== "" &&
+        (somenteNumeros(p.cpf).includes(termoNumeros) ||
+          somenteNumeros(p.telefone).includes(termoNumeros)))
   );
 
   lista.innerHTML = "";
@@ -123,11 +136,11 @@ function renderizarLista() {
 
     const linha = document.createElement("tr");
     linha.innerHTML = `
-      <td>${paciente.nome}</td>
-      <td>${paciente.cpf}</td>
-      <td><span class="selo ${selo}">${paciente.tipo}</span></td>
-      <td>${paciente.convenio || "-"}</td>
-      <td>${paciente.telefone || "-"}</td>
+      <td>${escaparHtml(paciente.nome)}</td>
+      <td>${escaparHtml(paciente.cpf)}</td>
+      <td><span class="selo ${selo}">${escaparHtml(paciente.tipo)}</span></td>
+      <td>${escaparHtml(paciente.convenio || "-")}</td>
+      <td>${escaparHtml(paciente.telefone || "-")}</td>
       <td class="acoes">
         <button class="btn-linha" data-acao="editar" data-id="${paciente.id}">Editar</button>
         <button class="btn-linha perigo" data-acao="excluir" data-id="${paciente.id}">Excluir</button>

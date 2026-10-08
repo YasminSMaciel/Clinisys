@@ -40,6 +40,23 @@ const PACIENTES_EXEMPLO = [
     bairro: "Jardim América",
     cidade: "Cascavel",
   },
+  {
+    id: 3,
+    tipo: "Particular",
+    nome: "Fernanda Lima",
+    nomeMae: "Lúcia Lima",
+    sexo: "Feminino",
+    nascimento: "1995-07-21",
+    cpf: "555.666.777-88",
+    telefone: "(45) 98888-2222",
+    convenio: "",
+    email: "fernanda.lima@exemplo.com",
+    logradouro: "Rua Paraná",
+    numero: "870",
+    complemento: "",
+    bairro: "Centro",
+    cidade: "Cascavel",
+  },
 ];
 
 const CONSULTAS_EXEMPLO = [
@@ -78,8 +95,12 @@ const CONSULTAS_EXEMPLO = [
 ];
 
 function lerDados(chave) {
-  const bruto = localStorage.getItem(chave);
-  return bruto ? JSON.parse(bruto) : [];
+  try {
+    const lista = JSON.parse(localStorage.getItem(chave));
+    return Array.isArray(lista) ? lista : [];
+  } catch (erro) {
+    return [];
+  }
 }
 
 function salvarDados(chave, lista) {
@@ -88,6 +109,21 @@ function salvarDados(chave, lista) {
 
 function proximoId(lista) {
   return lista.reduce((maior, item) => Math.max(maior, item.id), 0) + 1;
+}
+
+// Evita que textos digitados quebrem o HTML das tabelas.
+function escaparHtml(texto) {
+  return String(texto ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Deixa só os números de um texto (usado na busca por CPF/telefone).
+function somenteNumeros(texto) {
+  return String(texto ?? "").replace(/\D/g, "");
 }
 
 function formatarData(dataISO) {
