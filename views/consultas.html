@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CliniSys - Consultas</title>
+
+  <link rel="stylesheet" href="../public/css/style.css" />
+</head>
+<body>
+
+  <div class="sistema">
+
+    <!-- Menu lateral -->
+    <aside class="menu-lateral">
+
+      <div class="marca">
+        <div class="icone-marca">+</div>
+        <div>
+          <strong>CliniSys</strong>
+          <small>Gestão de Clínica</small>
+        </div>
+      </div>
+
+      <nav>
+        <a href="../index.html">Painel</a>
+        <a href="pacientes.html">Pacientes</a>
+        <a href="#">Médicos</a>
+        <a href="#">Convênios</a>
+        <a href="consultas.html" class="ativo">Consultas</a>
+      </nav>
+
+      <div class="menu-rodape">
+        <button id="carregarExemplos">Carregar exemplos</button>
+        <button id="limparDados">Limpar dados</button>
+      </div>
+    </aside>
+
+    <!-- Conteúdo -->
+    <main class="conteudo">
+
+      <div class="cabecalho-pagina">
+        <h1>Consultas</h1>
+        <div class="cabecalho-acoes">
+          <input type="text" id="campoBusca" placeholder="Buscar consultas..." />
+          <button class="btn btn-primario" id="novaConsulta">+ Nova Consulta</button>
+        </div>
+      </div>
+
+      <div class="cartao">
+        <div class="cartao-cabecalho">
+          Consultas <span class="contador" id="quantidadeConsultas">0</span>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Paciente</th>
+              <th>Médico</th>
+              <th>Situação</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tabelaConsultas"></tbody>
+        </table>
+
+        <div class="mensagem-vazia oculto" id="mensagemVaziaConsultas">
+          Nenhuma consulta cadastrada. Clique em "Carregar exemplos" ou em "+ Nova Consulta".
+        </div>
+      </div>
+
+      <div class="aviso oculto" id="avisoSemPaciente">
+        Cadastre ao menos um paciente na tela "Pacientes" antes de criar uma consulta.
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal de nova / edição de consulta -->
+  <div class="fundo-modal oculto" id="fundoModal">
+    <div class="modal">
+      <div class="modal-cabecalho">
+        <h2 id="tituloModal">Nova Consulta</h2>
+        <button id="fecharModal">✕</button>
+      </div>
+
+      <form id="formConsulta">
+        <input type="hidden" id="indiceConsulta" />
+
+        <div class="grade-formulario">
+          <div class="campo">
+            <label for="paciente">Paciente *</label>
+            <select id="paciente" required></select>
+          </div>
+
+          <div class="campo">
+            <label for="medico">Médico *</label>
+            <select id="medico" required></select>
+          </div>
+
+          <div class="campo">
+            <label for="dataConsulta">Data *</label>
+            <input type="date" id="dataConsulta" required />
+          </div>
+
+          <div class="campo">
+            <label for="horaConsulta">Hora *</label>
+            <input type="time" id="horaConsulta" required />
+          </div>
+
+          <div class="campo largura-total">
+            <label for="situacao">Situação *</label>
+            <select id="situacao" required>
+              <option value="Agendada">Agendada</option>
+              <option value="Confirmada">Confirmada</option>
+              <option value="Realizada">Realizada</option>
+              <option value="Cancelada">Cancelada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-rodape">
+          <button type="button" class="btn btn-secundario" id="cancelarConsulta">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../public/js/dados.js"></script>
+  <script src="../public/js/consultas.js"></script>
+</body>
+</html>

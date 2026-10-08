@@ -1,0 +1,9 @@
+{
+  "name": "clinisys",
+  "version": "1.0.0",
+  "description": "ClíniSys - Sistema Web de Gestão de Clínica (HTML, CSS e JavaScript puros)",
+  "private": true,
+  "scripts": {
+    "start": "npx serve ."
+  }
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CliniSys - Painel</title>
+
+  <link rel="stylesheet" href="public/css/style.css" />
+</head>
+<body>
+
+  <div class="sistema">
+
+    <!-- Menu lateral -->
+    <aside class="menu-lateral">
+
+      <div class="marca">
+        <div class="icone-marca">+</div>
+        <div>
+          <strong>CliniSys</strong>
+          <small>Gestão de Clínica</small>
+        </div>
+      </div>
+
+      <nav>
+        <a href="index.html" class="ativo">Painel</a>
+        <a href="views/pacientes.html">Pacientes</a>
+        <a href="#">Médicos</a>
+        <a href="#">Convênios</a>
+        <a href="views/consultas.html">Consultas</a>
+      </nav>
+
+      <div class="menu-rodape">
+        <button id="carregarExemplos">Carregar exemplos</button>
+        <button id="limparDados">Limpar dados</button>
+      </div>
+    </aside>
+
+    <!-- Conteúdo -->
+    <main class="conteudo">
+
+      <div class="cabecalho-pagina">
+        <h1>Painel</h1>
+      </div>
+
+      <div class="grade-cartoes">
+        <div class="cartao-resumo">
+          <span>Pacientes cadastrados</span>
+          <strong id="totalPacientes">0</strong>
+        </div>
+        <div class="cartao-resumo">
+          <span>Consultas cadastradas</span>
+          <strong id="totalConsultas">0</strong>
+        </div>
+      </div>
+
+      <div class="cartao">
+        <div class="cartao-cabecalho">Atalhos</div>
+        <table>
+          <tbody>
+            <tr>
+              <td><a href="views/pacientes.html">Ir para Pacientes</a></td>
+              <td class="acoes">Cadastrar, buscar, editar e excluir pacientes</td>
+            </tr>
+            <tr>
+              <td><a href="views/consultas.html">Ir para Consultas</a></td>
+              <td class="acoes">Agendar, editar e excluir consultas</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="public/js/dados.js"></script>
+  <script>
+    function atualizarResumo() {
+      document.querySelector("#totalPacientes").textContent =
+        lerDados(CHAVE_PACIENTES).length;
+      document.querySelector("#totalConsultas").textContent =
+        lerDados(CHAVE_CONSULTAS).length;
+    }
+
+    ligarBotoesRodape(atualizarResumo);
+    atualizarResumo();
+  </script>
+</body>
+</html>
