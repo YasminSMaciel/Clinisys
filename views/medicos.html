@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CliniSys - Médicos</title>
+
+  <link rel="stylesheet" href="../public/css/style.css" />
+</head>
+<body>
+
+  <div class="sistema">
+
+    <!-- Menu lateral -->
+    <aside class="menu-lateral">
+
+      <div class="marca">
+        <div class="icone-marca">+</div>
+        <div>
+          <strong>CliniSys</strong>
+          <small>Gestão de Clínica</small>
+        </div>
+      </div>
+
+      <nav>
+        <a href="../index.html">Painel</a>
+        <a href="pacientes.html">Pacientes</a>
+        <a href="medicos.html" class="ativo">Médicos</a>
+        <a href="convenios.html">Convênios</a>
+        <a href="consultas.html">Consultas</a>
+      </nav>
+
+      <div class="menu-rodape">
+        <button id="carregarExemplos">Carregar exemplos</button>
+        <button id="limparDados">Limpar dados</button>
+      </div>
+    </aside>
+
+    <!-- Conteúdo -->
+    <main class="conteudo">
+
+      <div class="cabecalho-pagina">
+        <h1>Médicos</h1>
+        <div class="cabecalho-acoes">
+          <input type="text" id="campoBusca" placeholder="Buscar médicos..." />
+          <button class="btn btn-primario" id="abrirFormulario">+ Novo Médico</button>
+        </div>
+      </div>
+
+      <div class="cartao">
+        <div class="cartao-cabecalho">
+          Médicos <span class="contador" id="quantidade">0</span>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>CRM</th>
+              <th>Especialidade</th>
+              <th>Telefone</th>
+              <th>Consultas</th>
+              <th>Situação</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="listaMedicos"></tbody>
+        </table>
+
+        <div class="mensagem-vazia oculto" id="mensagemVazia">
+          Nenhum médico cadastrado. Clique em "Carregar exemplos" ou em "+ Novo Médico".
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal de cadastro / edição -->
+  <div class="fundo-modal oculto" id="sobreposicao">
+    <div class="modal">
+      <div class="modal-cabecalho">
+        <h2 id="tituloModal">Novo Médico</h2>
+        <button id="fecharFormulario">✕</button>
+      </div>
+
+      <form id="formMedico">
+        <input type="hidden" id="medicoId" />
+
+        <div class="grade-formulario">
+          <div class="campo largura-total">
+            <label for="nome">Nome *</label>
+            <input type="text" id="nome" placeholder="Dr(a). Nome completo" required />
+          </div>
+
+          <div class="campo">
+            <label for="crm">CRM *</label>
+            <input type="text" id="crm" placeholder="CRM/UF 00000" required />
+          </div>
+
+          <div class="campo">
+            <label for="especialidade">Especialidade *</label>
+            <select id="especialidade" required>
+              <option value="Clínica Geral">Clínica Geral</option>
+              <option value="Cardiologia">Cardiologia</option>
+              <option value="Dermatologia">Dermatologia</option>
+              <option value="Ginecologia">Ginecologia</option>
+              <option value="Ortopedia">Ortopedia</option>
+              <option value="Pediatria">Pediatria</option>
+              <option value="Psiquiatria">Psiquiatria</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="telefone">Telefone</label>
+            <input type="text" id="telefone" placeholder="(00) 0000-0000" />
+          </div>
+
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="email@exemplo.com" />
+          </div>
+
+          <div class="campo">
+            <label for="situacao">Situação *</label>
+            <select id="situacao" required>
+              <option value="Ativo">Ativo</option>
+              <option value="Inativo">Inativo</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-rodape">
+          <button type="button" class="btn btn-secundario" id="cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../public/js/dados.js"></script>
+  <script src="../public/js/medicos.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # ClíniSys
 
-Sistema web de gestão de clínica (cadastro de pacientes e consultas).
+Sistema web de gestão de clínica (cadastro de pacientes, médicos, convênios e consultas).
 
 ## Estrutura
 
@@ -9,6 +9,8 @@ clinisys/
 ├── index.html              # Painel inicial
 ├── views/
 │   ├── pacientes.html      # Cadastro + consulta de pacientes (era 2 telas separadas)
+│   ├── medicos.html        # Cadastro de médicos
+│   ├── convenios.html      # Cadastro de convênios
 │   └── consultas.html      # Gerenciamento de consultas
 ├── public/
 │   ├── css/
@@ -16,6 +18,8 @@ clinisys/
 │   └── js/
 │       ├── dados.js        # Dados de exemplo e funções de armazenamento (localStorage)
 │       ├── pacientes.js    # Lógica da tela de pacientes
+│       ├── medicos.js      # Lógica da tela de médicos
+│       ├── convenios.js    # Lógica da tela de convênios
 │       └── consultas.js    # Lógica da tela de consultas
 ├── package.json
 └── README.md

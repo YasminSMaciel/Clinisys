@@ -8,8 +8,19 @@ const campoBusca = document.querySelector("#campoBusca");
 const tituloModal = document.querySelector("#tituloModal");
 const pacienteIdCampo = document.querySelector("#pacienteId");
 
+const campoConvenio = document.querySelector("#convenio");
+
+// Preenche o <select> de convênios com os convênios ativos cadastrados.
+function preencherConvenios() {
+  const convenios = lerDados(CHAVE_CONVENIOS).filter((c) => c.situacao !== "Inativo");
+  campoConvenio.innerHTML =
+    '<option value="">Sem convênio / particular</option>' +
+    opcoesHtml(convenios.map((c) => c.nome));
+}
+
 // Abre o formulário de cadastro (paciente novo).
 function abrirFormulario() {
+  preencherConvenios();
   formulario.reset();
   pacienteIdCampo.value = "";
   tituloModal.textContent = "Novo Paciente";
@@ -38,6 +49,8 @@ document
 
 // Preenche o formulário para edição de um paciente existente.
 function abrirEdicao(paciente) {
+  preencherConvenios();
+  garantirOpcao(campoConvenio, paciente.convenio);
   formulario.reset();
   pacienteIdCampo.value = paciente.id;
   tituloModal.textContent = "Editar Paciente";
@@ -123,6 +136,7 @@ function renderizarLista() {
     (p) =>
       (p.nome || "").toLowerCase().includes(termo) ||
       (p.cpf || "").toLowerCase().includes(termo) ||
+      (p.convenio || "").toLowerCase().includes(termo) ||
       (termoNumeros !== "" &&
         (somenteNumeros(p.cpf).includes(termoNumeros) ||
           somenteNumeros(p.telefone).includes(termoNumeros)))
